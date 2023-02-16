@@ -1,15 +1,17 @@
-# Prompt the user for the folder name and file names
-$folderName = Read-Host "Enter the name of the folder"
-$fileNamePrefix = Read-Host "Enter the prefix for the file names"
+# Prompt user for folder name
+$folderName = Read-Host "Enter folder name"
 
 # Create the folder
 New-Item -ItemType Directory -Path $folderName
 
-# Generate 10 1GB files
+# Prompt user for file name
+$fileName = Read-Host "Enter file name (without extension)"
+
+# Create 10 files with the specified name and size
 for ($i = 1; $i -le 10; $i++) {
-    $fileName = $fileNamePrefix + $i.ToString("00") + ".txt"
-    $filePath = Join-Path $folderName $fileName
-    $fileStream = New-Object IO.FileStream $filePath, Create, ReadWrite
-    $fileStream.SetLength(1GB)
-    $fileStream.Close()
+    $filePath = $folderName + "\" + $fileName + $i.ToString() + ".txt"
+    $stream = New-Object System.IO.FileStream($filePath, [System.IO.FileMode]::Create)
+    $stream.SetLength(5GB)
+    $stream.Close()
+    Write-Host "Created file: " $filePath
 }
