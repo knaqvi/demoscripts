@@ -1,5 +1,5 @@
 @echo off
-set /p adminuser=Enter your AD username: Administrator
+set /p adminuser=Enter your AD username: 
 set /p password=Enter your AD password: 
 
 net user %adminuser% /domain
