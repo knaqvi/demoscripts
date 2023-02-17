@@ -1,8 +1,11 @@
-# Get the current folder path
-$folderPath = (Get-Location).Path
+$folderPath = Read-Host "Enter folder path to share"
+$shareName = Read-Host "Enter name for the SMB share"
 
-# Get the current user name
-$userName = $env:USERNAME
+# Create a new SMB share
+New-SmbShare -Name $shareName -Path $folderPath -FullAccess "Everyone"
 
-# Create a new share
-New-SmbShare -Name $folderPath -Path $folderPath -FullAccess $userName
+# Grant permission to share to everyone
+$Acl = Get-Acl $folderPath
+$Ar = New-Object System.Security.AccessControl.FileSystemAccessRule("Everyone","FullControl","Allow")
+$Acl.SetAccessRule($Ar)
+Set-Acl $folderPath $Acl
